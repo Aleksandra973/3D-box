@@ -9,7 +9,7 @@ export function sceneInit(containerId) {
     const near = 0.1;
     const far = 100;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    camera.position.z = 5;
+    camera.position.z = 6.2;
 
     const scene = new THREE.Scene();
 
@@ -24,8 +24,8 @@ export function sceneInit(containerId) {
 }
 
 export function makeInstance(geometry,scene, color, x) {
-    const material = new THREE.MeshBasicMaterial({color});
-    //const material = new THREE.MeshBasicMaterial({vertexColors: THREE.FaceColors});
+    //const material = new THREE.MeshBasicMaterial({color});
+    const material = new THREE.MeshBasicMaterial({vertexColors: THREE.FaceColors});
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
 

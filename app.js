@@ -62,14 +62,14 @@ app.post('/calculate', (req, res) => {
       */
 
             "vertices": [
-                [0, 0, 0], //0
-                [request.length, 0, 0], //1
-                [0, request.height, 0], //2
-                [request.length, request.height, 0], //3
-                [0, 0, request.width], //4
-                [request.length, 0, request.width], //5
-                [0, request.height, request.width], //6
-                [request.length, request.height, request.width] //7
+                [0, 0, request.width], //0
+                [request.length, 0, request.width], //1
+                [0, request.height, request.width], //2
+                [request.length, request.height, request.width], //3
+                [0, 0, 0], //4
+                [request.length, 0, 0], //5
+                [0, request.height, 0], //6
+                [request.length, request.height, 0] //7
             ],
             "faces": [
                 // front

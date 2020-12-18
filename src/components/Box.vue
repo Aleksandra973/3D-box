@@ -89,6 +89,12 @@ export default {
         this.geometry.faces.push(
             new THREE.Face3(a, b, c))
       })
+      this.geometry.faces[0].color = this.geometry.faces[1].color = new THREE.Color('red');
+      this.geometry.faces[2].color = this.geometry.faces[3].color = new THREE.Color('yellow');
+      this.geometry.faces[4].color = this.geometry.faces[5].color = new THREE.Color('green');
+      this.geometry.faces[6].color = this.geometry.faces[7].color = new THREE.Color('cyan');
+      this.geometry.faces[8].color = this.geometry.faces[9].color = new THREE.Color('blue');
+      this.geometry.faces[10].color = this.geometry.faces[11].color = new THREE.Color('magenta');
 
       if(this.scene.children[1]) {
          this.scene.children.pop()
