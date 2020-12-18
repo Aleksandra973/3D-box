@@ -25,7 +25,7 @@ export function sceneInit(containerId) {
 
 export function makeInstance(geometry,scene, color, x) {
     const material = new THREE.MeshBasicMaterial({color});
-
+    //const material = new THREE.MeshBasicMaterial({vertexColors: THREE.FaceColors});
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
 

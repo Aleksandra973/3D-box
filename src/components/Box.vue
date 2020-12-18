@@ -2,20 +2,29 @@
   <div class="container">
     <div class="row justify-content-center">
       <form class="col-md-5 justify-content-center">
-        <h3>Create a a 3D object</h3>
+        <h3>Create 3D object</h3>
         <div class="form-group">
           <label for="length">Insert length</label>
           <input type="text" class="form-control" id="length" v-model="length">
+          <div class="error" v-if="$v.length.$invalid">
+            Enter value between 0.5 and 3.0
+          </div>
         </div>
         <div class="form-group">
           <label for="width">Insert width</label>
           <input type="text" class="form-control" id="width" v-model="width">
+          <div class="error" v-if="$v.width.$invalid">
+            Enter value between 0.5 and 3.0
+          </div>
         </div>
         <div class="form-group">
           <label for="height">Insert height</label>
           <input type="text" class="form-control" id="height" v-model="height">
+          <div class="error" v-if="$v.height.$invalid">
+            Enter value between 0.5 and 3.0
+          </div>
         </div>
-        <button @click="calculate" type="button" class="btn btn-primary">Submit</button>
+        <button :disabled="$v.$invalid" @click="calculate" type="button" class="btn btn-primary">Submit</button>
       </form>
     </div>
     <canvas id="c"></canvas>
@@ -26,6 +35,7 @@
 import * as THREE from 'three';
 import {sceneInit, makeInstance, resizeRendererToDisplaySize} from '../helpers/3dHelper'
 import axios from 'axios'
+import {required, between} from "vuelidate/lib/validators";
 
 export default {
   name: 'Box',
@@ -35,67 +45,55 @@ export default {
       geometry: {},
       camera: {},
       renderer: {},
-      length: null,
-      width: null,
-      height: null
+      length: 1,
+      width: 1,
+      height: 1
+    }
+  },
+  validations: {
+    length: {
+      required,
+      between: between(0.5, 3),
+      validFormat: val =>  /[0-9.]/.test(val),
+    },
+    width: {
+      required,
+      between: between(0.5, 3),
+      validFormat: val =>  /[0-9.]/.test(val),
+    },
+    height: {
+      required,
+      between: between(0.5, 3),
+      validFormat: val =>  /[0-9.]/.test(val),
     }
   },
   methods: {
     async calculate() {
-      let result = await axios.post('http://localhost:3000/calculate', {
+      this.geometry = new THREE.Geometry();
+      let response = await axios.post('http://localhost:3000/calculate', {
         "length": +this.length,
         "width": +this.width,
         "height": +this.height
-      });
+      })
+
+      let vertices = response.data.vertices
+      vertices.forEach((item) => {
+        let [x, y, z] = item
+        this.geometry.vertices.push(
+          new THREE.Vector3(x, y, z))
+      })
+
+      let faces = response.data.faces
+      faces.forEach((item) => {
+        let [a, b, c] = item
+        this.geometry.faces.push(
+            new THREE.Face3(a, b, c))
+      })
+
       if(this.scene.children[1]) {
          this.scene.children.pop()
       }
-      this.cubeInit(this.height, this.width, this.length);
       this.renderScene()
-    },
-    cubeInit(height, width, length) {
-      this.geometry = new THREE.Geometry();
-      this.geometry.vertices.push(
-          new THREE.Vector3(0, 0, 0),  // 0
-          new THREE.Vector3(length, 0, 0),  // 1
-          new THREE.Vector3(0, height, 0),  // 2
-          new THREE.Vector3(length, height, 0),  // 3
-          new THREE.Vector3(0, 0, width),  // 4
-          new THREE.Vector3(length, 0, width),  // 5
-          new THREE.Vector3(0, height, width),  // 6
-          new THREE.Vector3(length, height, width),  // 7
-      );
-
-      /*
-           6----7
-          /|   /|
-         2----3 |
-         | |  | |
-         | 4--|-5
-         |/   |/
-         0----1
-      */
-
-      this.geometry.faces.push(
-          // front
-          new THREE.Face3(0, 3, 2),
-          new THREE.Face3(0, 1, 3),
-          // right
-          new THREE.Face3(1, 7, 3),
-          new THREE.Face3(1, 5, 7),
-          // back
-          new THREE.Face3(5, 6, 7),
-          new THREE.Face3(5, 4, 6),
-          // left
-          new THREE.Face3(4, 2, 6),
-          new THREE.Face3(4, 0, 2),
-          // top
-          new THREE.Face3(2, 7, 6),
-          new THREE.Face3(2, 3, 7),
-          // bottom
-          new THREE.Face3(4, 1, 0),
-          new THREE.Face3(4, 5, 1),
-      )
     },
 
     renderScene() {
@@ -136,5 +134,8 @@ export default {
 #c{
   width: 100%;
   margin-top: 40px;
+}
+.error {
+  color: red;
 }
 </style>

@@ -14,7 +14,8 @@
     "popper.js": "^1.16.1",
     "three": "^0.123.0",
     "vue": "^2.6.11",
-    "axios": "^0.21.0"
+    "axios": "^0.21.0",
+    "vuelidate": "^0.7.6"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

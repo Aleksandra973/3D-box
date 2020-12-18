@@ -21,6 +21,7 @@ server.listen(port, hostname, () => {
 
 
 
+
 const express = require('express')
 
 
@@ -46,21 +47,51 @@ app.post('/calculate', (req, res) => {
         data += chunk;
     })
     req.on('end', () => {
-       let request = JSON.parse(data)
+        let request = JSON.parse(data)
         console.log(request)
         res.send({
-            "vertices": [
-                [0,0,0],
-                [request.length,0,0],
-                [0, request.height, 0],
-                [request.length, request.height, 0],
-                [0, 0, request.width],
-                [request.length, 0, request.width],
-                [0, request.height, request.width],
-                [request.length, request.height, request.width]],
-            "faces": [
 
-            ]})
+            /*
+           6----7
+          /|   /|
+         2----3 |
+         | |  | |
+         | 4--|-5
+         |/   |/
+         0----1
+      */
+
+            "vertices": [
+                [0, 0, 0], //0
+                [request.length, 0, 0], //1
+                [0, request.height, 0], //2
+                [request.length, request.height, 0], //3
+                [0, 0, request.width], //4
+                [request.length, 0, request.width], //5
+                [0, request.height, request.width], //6
+                [request.length, request.height, request.width] //7
+            ],
+            "faces": [
+                // front
+                [0, 3, 2],
+                [0, 1, 3],
+                // right
+                [1, 7, 3],
+                [1, 5, 7],
+                // back
+                [5, 6, 7],
+                [5, 4, 6],
+                // left
+                [4, 2, 6],
+                [4, 0, 2],
+                // top
+                [2, 7, 6],
+                [2, 3, 7],
+                // bottom
+                [4, 1, 0],
+                [4, 5, 1]
+            ]
+        })
     })
 })
 
