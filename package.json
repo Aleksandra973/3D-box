@@ -7,9 +7,14 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "bootstrap": "^4.5.3",
     "core-js": "^3.6.5",
+    "express": "^4.17.1",
+    "jquery": "^3.5.1",
+    "popper.js": "^1.16.1",
+    "three": "^0.123.0",
     "vue": "^2.6.11",
-    "three": "^0.123.0"
+    "axios": "^0.21.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
