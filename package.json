@@ -15,7 +15,8 @@
     "three": "^0.123.0",
     "vue": "^2.6.11",
     "axios": "^0.21.0",
-    "vuelidate": "^0.7.6"
+    "vuelidate": "^0.7.6",
+    "orbit-controls-es6": "^2.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

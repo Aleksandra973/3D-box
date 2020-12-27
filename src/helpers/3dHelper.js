@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import OrbitControls from 'orbit-controls-es6';
 
 export function sceneInit(containerId) {
     const canvas = document.getElementById(containerId);
@@ -9,6 +10,7 @@ export function sceneInit(containerId) {
     const near = 0.1;
     const far = 100;
     const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+
     camera.position.z = 6.2;
 
     const scene = new THREE.Scene();
@@ -20,6 +22,16 @@ export function sceneInit(containerId) {
         light.position.set(-1, 2, 4);
         scene.add(light);
     }
+
+    function render() {
+        renderer.render(scene, camera)
+    }
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.addEventListener( 'change',  render);
+
+    controls.update();
+
     return { renderer: renderer, scene: scene, camera: camera }
 }
 
@@ -43,3 +55,7 @@ export function resizeRendererToDisplaySize(renderer) {
     }
     return needResize;
 }
+
+//export function render() {
+//    this.renderer.render(this.scene, this.camera)
+//}
